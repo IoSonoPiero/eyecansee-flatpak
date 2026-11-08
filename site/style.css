@@ -98,3 +98,7 @@ footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
 .fingerprint { overflow-wrap: anywhere; }
 @media (prefers-color-scheme: dark) { .button { color: #0f141a; } }
 .cards.one { grid-template-columns: 1fr; } /* the install command on one line */
+.command { position: relative; }
+.command pre { padding-right: 88px; }
+.copy { position: absolute; top: 8px; right: 8px; font: inherit; font-size: 0.85rem; padding: 4px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer; }
+.copy:hover { border-color: var(--accent); }

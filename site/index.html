@@ -27,7 +27,7 @@
   <div class="cards one">
     <div class="card">
       <h3>From a terminal</h3>
-      <pre><code>flatpak install https://flatpak.montinaro.info/eyecansee.flatpakref</code></pre>
+      <div class="command"><pre><code>flatpak install https://flatpak.montinaro.info/eyecansee.flatpakref</code></pre><button class="copy" type="button" hidden>Copy</button></div>
       <p>Updates come with <code>flatpak update</code> or your software center, like any other Flatpak; EyeCanSee does not check for updates by itself.</p>
     </div>
     <div class="card">
@@ -57,5 +57,18 @@
     <a href="https://github.com/IoSonoPiero/eyecansee/issues">Issues</a>
   </nav>
 </footer>
+<script>
+// The Copy button next to the command; without scripts it stays hidden and a click selects the command.
+for (const b of document.querySelectorAll(".copy")) {
+  b.hidden = false;
+  b.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(b.previousElementSibling.textContent);
+      b.textContent = "Copied";
+    } catch { b.textContent = "Select and copy"; }
+    setTimeout(() => (b.textContent = "Copy"), 2000);
+  });
+}
+</script>
 </body>
 </html>
