@@ -63,6 +63,7 @@ pre {
 }
 code { font-family: ui-monospace, "Cascadia Mono", "DejaVu Sans Mono", Menlo, Consolas, monospace; }
 p code { background: var(--code); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+li code { overflow-wrap: anywhere; } /* a long name in a list breaks instead of widening the page */
 .numbers { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
 .number { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; }
 .number b { display: block; font-size: 1.8rem; color: var(--brand); line-height: 1.2; }
