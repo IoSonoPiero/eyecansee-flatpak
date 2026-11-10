@@ -6,19 +6,40 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      tag:
+        description: Release to publish (empty = the latest)
+        required: false
 
+# A deploy made from the release's tag succeeds but the site keeps the previous version (#1):
+# Pages serves only deploys from main. So the release only starts this workflow again on main.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  relaunch:
+    if: github.event_name == 'release'
     runs-on: ubuntu-24.04
+    permissions:
+      actions: write
+    steps:
+      - name: Deploy again from main, with this release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: gh workflow run pages --repo "$GITHUB_REPOSITORY" --ref main -f tag="$TAG"
+
+  deploy:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
@@ -27,9 +48,9 @@ jobs:
       - name: Repository of the latest release, checked
         env:
           GH_TOKEN: ${{ github.token }}
-          # The release that started the run; empty when run by hand (then the latest). Asking for
-          # "the latest" right after publishing could still get the previous one (0.75.0, 2026-11-09).
-          TAG: ${{ github.event.release.tag_name }}
+          # The release passed by the relaunch job; empty when run by hand (then the latest). Asking
+          # for "the latest" right after publishing could still get the previous one (0.75.0, 2026-11-09).
+          TAG: ${{ inputs.tag }}
         run: |
           F=eyecansee-flatpak-repo.tar
           cp -r site _site
