@@ -13,6 +13,8 @@ on:
 
 # A deploy made from the release's tag succeeds but the site keeps the previous version (#1):
 # Pages serves only deploys from main. So the release only starts this workflow again on main.
+# After a deploy, the version online is in repo/refs/heads/app/io.github.IoSonoPiero.EyeCanSee/x86_64/master
+# (the commit of the app); it should change within a minute.
 permissions:
   contents: read
 
